@@ -3,7 +3,10 @@ package com.indoorcycling.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.indoorcycling.app.ui.MainScreen
+import com.indoorcycling.app.ui.SessionState
 import com.indoorcycling.app.ui.theme.IndoorCyclingTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +16,17 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IndoorCyclingTheme {
-                MainScreen()
+
+                val state = remember { mutableStateOf(SessionState()) }
+
+                MainScreen(
+                    state = state.value,
+                    onStartStop = {
+                        state.value = state.value.copy(
+                            isRunning = !state.value.isRunning
+                        )
+                    }
+                )
             }
         }
     }
