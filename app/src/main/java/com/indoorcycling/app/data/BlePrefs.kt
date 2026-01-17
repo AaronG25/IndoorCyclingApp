@@ -1,13 +1,12 @@
 package com.indoorcycling.app.data
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 
-private val Context.dataStore by preferencesDataStore(name = "ble_prefs")
+private val Context.dataStore by preferencesDataStore("ble_prefs")
 
 object BlePrefs {
 
