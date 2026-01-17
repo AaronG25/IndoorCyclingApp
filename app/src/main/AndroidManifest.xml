@@ -3,6 +3,18 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Bluetooth Android 12+ -->
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+<!-- Nécessaire pour BLE sur Android < 12 -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+<!-- Déclare que l'app utilise le Bluetooth -->
+<uses-feature
+    android:name="android.hardware.bluetooth_le"
+    android:required="false" />
+
 
 
     <application
