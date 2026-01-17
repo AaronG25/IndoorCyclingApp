@@ -1,0 +1,2 @@
+rootProject.name = "IndoorCyclingApp"
+include(":app", ":wear")
