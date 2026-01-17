@@ -14,20 +14,27 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
-            IndoorCyclingTheme {
+setContent {
+    IndoorCyclingTheme {
 
-                val state = remember { mutableStateOf(SessionState()) }
+        val state = remember {
+            mutableStateOf(SessionState())
+        }
 
-                MainScreen(
-                    state = state.value,
-                    onStartStop = {
-                        state.value = state.value.copy(
-                            isRunning = !state.value.isRunning
-                        )
-                    }
+        MainScreen(
+            state = state.value,
+
+            onAddSensor = {
+                // Simulation : on "ajoute" un capteur
+                state.value = state.value.copy(hasSensor = true)
+            },
+
+            onStartStop = {
+                state.value = state.value.copy(
+                    isRunning = !state.value.isRunning
                 )
             }
-        }
+        )
     }
 }
+
