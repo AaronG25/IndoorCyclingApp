@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
-class BleCadenceManager(private val context: Context) {
+class BleCadenceManager( val context: Context) {
 
     private val bluetoothManager =
         context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
