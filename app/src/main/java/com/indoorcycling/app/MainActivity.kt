@@ -12,6 +12,11 @@ import androidx.core.content.ContextCompat
 import com.indoorcycling.app.ui.MainScreen
 import com.indoorcycling.app.ui.SessionState
 import com.indoorcycling.app.ui.theme.IndoorCyclingTheme
+import com.indoorcycling.app.ble.BleScanManager
+import com.indoorcycling.app.ble.BleDevice
+
+private var scanManager: BleScanManager? = null
+
 
 class MainActivity : ComponentActivity() {
 
@@ -43,20 +48,36 @@ class MainActivity : ComponentActivity() {
                     state = state.value,
 
                     onAddSensor = {
-                        if (hasBlePermissions()) {
-                            state.value = state.value.copy(hasSensor = true)
-                        } else {
-                            onBlePermissionGranted = {
-                                state.value = state.value.copy(hasSensor = true)
-                            }
-                            blePermissionLauncher.launch(
-                                arrayOf(
-                                    Manifest.permission.BLUETOOTH_SCAN,
-                                    Manifest.permission.BLUETOOTH_CONNECT
-                                )
-                            )
-                        }
-                    },
+    if (!state.value.isScanning) {
+        state.value = state.value.copy(
+            isScanning = true,
+            devices = emptyList()
+        )
+
+        scanManager = BleScanManager(this) { device ->
+            if (state.value.devices.none { it.address == device.address }) {
+                state.value = state.value.copy(
+                    devices = state.value.devices + device
+                )
+            }
+        }
+
+        scanManager?.startScan()
+
+    } else {
+        scanManager?.stopScan()
+        state.value = state.value.copy(isScanning = false)
+    }
+},
+onDeviceSelected = { device ->
+    scanManager?.stopScan()
+    state.value = state.value.copy(
+        selectedDevice = device,
+        isScanning = false,
+        hasSensor = true
+    )
+},
+
 
                     onStartStop = {
                         state.value = state.value.copy(
