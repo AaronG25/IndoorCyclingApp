@@ -10,20 +10,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.indoorcycling.app.ble.BleCadenceManager
-import androidx.compose.runtime.rememberCoroutineScope
 import com.indoorcycling.app.data.BlePrefs
 import kotlinx.coroutines.launch
 
-
 @Composable
-val scope = rememberCoroutineScope()
-
 fun BleScanScreen(
     bleManager: BleCadenceManager,
     onDeviceConnected: () -> Unit
 ) {
     val devices = remember { mutableStateListOf<BluetoothDevice>() }
     var scanning by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -43,7 +40,12 @@ fun BleScanScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (scanning) "Recherche en cours..." else "Ajouter un capteur de cadence")
+            Text(
+                text = if (scanning)
+                    "Recherche en cours..."
+                else
+                    "Ajouter un capteur de cadence"
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -55,20 +57,18 @@ fun BleScanScreen(
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
                         .clickable {
-    bleManager.stopScan()
-    bleManager.connect(device)
-    scanning = false
+                            bleManager.stopScan()
+                            bleManager.connect(device)
+                            scanning = false
 
-    scope.launch {
-        BlePrefs.saveDeviceAddress(
-            bleManager.context,
-            device.address
-        )
-    }
+                            scope.launch {
+                                BlePrefs.saveDeviceAddress(
+                                    bleManager.context,
+                                    device.address
+                                )
+                            }
 
-    onDeviceConnected()
-}
-
+                            onDeviceConnected()
                         }
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
