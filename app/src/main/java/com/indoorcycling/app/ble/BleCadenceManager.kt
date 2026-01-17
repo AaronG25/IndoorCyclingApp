@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import java.util.UUID
 
 class BleCadenceManager(val context: Context) {
 
