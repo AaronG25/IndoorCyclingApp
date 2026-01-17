@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.indoorcycling.app.ble.BleCadenceManager
 import com.indoorcycling.app.ui.MainScreen
-import com.indoorcycling.app.ui.theme.Theme
+import com.indoorcycling.app.ui.theme.IndoorCyclingTheme
 
 class MainActivity : ComponentActivity() {
 
