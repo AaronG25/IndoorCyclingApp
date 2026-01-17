@@ -1,4 +1,4 @@
-package com.indoorcycling.app.ui
+package com.indoorcycling.app.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
