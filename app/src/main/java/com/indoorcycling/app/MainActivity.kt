@@ -6,6 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import com.indoorcycling.app.ble.BleCadenceManager
 import com.indoorcycling.app.ui.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import com.indoorcycling.app.data.BlePrefs
+import android.bluetooth.BluetoothAdapter
+
 
 class MainActivity : ComponentActivity() {
 
@@ -13,6 +18,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val savedDeviceAddress =
+    BlePrefs.deviceAddressFlow(this).collectAsState(initial = null)
+
+LaunchedEffect(savedDeviceAddress.value) {
+    savedDeviceAddress.value?.let { address ->
+        val device =
+            BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address)
+        bleManager.connect(device)
+        paired = true
+    }
+}
+
             IndoorCyclingTheme {
 
                 val bleManager = remember {
