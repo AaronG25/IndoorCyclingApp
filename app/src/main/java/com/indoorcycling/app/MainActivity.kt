@@ -6,6 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.indoorcycling.app.ui.*
+import androidx.compose.runtime.collectAsState
+import com.indoorcycling.app.ble.BleCadenceManager
+
 
 class MainActivity : ComponentActivity() {
 
@@ -14,9 +17,22 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             IndoorCyclingTheme {
-                val state = remember {
-                    mutableStateOf(SessionUiState())
-                }
+                val state = val bleManager = remember {
+    BleCadenceManager(this)
+}
+
+val cadence = bleManager.cadenceRpm.collectAsState()
+
+val state = remember {
+    mutableStateOf(SessionUiState())
+}
+
+LaunchedEffect(cadence.value) {
+    state.value = state.value.copy(
+        cadence = cadence.value
+    )
+}
+
 
                 MainScreen(
                     state = state.value,
