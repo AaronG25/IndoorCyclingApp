@@ -10,8 +10,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.indoorcycling.app.ble.BleCadenceManager
+import androidx.compose.runtime.rememberCoroutineScope
+import com.indoorcycling.app.data.BlePrefs
+import kotlinx.coroutines.launch
+
 
 @Composable
+val scope = rememberCoroutineScope()
+
 fun BleScanScreen(
     bleManager: BleCadenceManager,
     onDeviceConnected: () -> Unit
@@ -49,10 +55,20 @@ fun BleScanScreen(
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
                         .clickable {
-                            bleManager.stopScan()
-                            bleManager.connect(device)
-                            scanning = false
-                            onDeviceConnected()
+    bleManager.stopScan()
+    bleManager.connect(device)
+    scanning = false
+
+    scope.launch {
+        BlePrefs.saveDeviceAddress(
+            bleManager.context,
+            device.address
+        )
+    }
+
+    onDeviceConnected()
+}
+
                         }
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
